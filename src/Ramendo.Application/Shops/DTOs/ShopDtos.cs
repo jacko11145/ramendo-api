@@ -3,11 +3,11 @@ namespace Ramendo.Application.Shops.DTOs;
 public sealed record RamenShopListDto(
     string Id, string Name, string City, string District, string DetailAddress,
     string? CoverImage, float Rating, float GoogleRating, int ReviewCount,
-    string[] Types, bool IsActive, bool IsVerified, string? Phone);
+    string[] Types, bool IsActive, bool IsVerified, string? Phone, string? Instagram);
 
 public sealed record RamenShopDetailDto(
     string Id, string Name, string? Description, string City, string District,
-    string DetailAddress, string? Phone, string? Website, string? FacebookPageId,
+    string DetailAddress, string? Phone, string? Website, string? FacebookPageId, string? Instagram,
     string[] Images, string? CoverImage, float Rating, float GoogleRating, float CriticRating,
     int ReviewCount, string[] Types, bool IsActive, bool IsVerified,
     BusinessHoursDto? BusinessHours, NewsItemDto[] NewsItems, MenuItemDto[] MenuItems,
@@ -37,5 +37,13 @@ public sealed record MenuItemOptionValueDto(
 
 public sealed record CreateUpdateShopDto(
     string Name, string? Description, string City, string District,
-    string DetailAddress, string? Phone, string? Website, string? FacebookPageId,
-    string[] Types, bool IsActive, BusinessHoursDto? BusinessHours, NewsItemDto[]? NewsItems);
+    string DetailAddress, string? Phone, string? Website, string? FacebookPageId, string? Instagram,
+    string[] Types, bool IsActive, bool IsVerified, float? GoogleRating,
+    BusinessHoursDto? BusinessHours, NewsItemDto[]? NewsItems);
+
+public sealed record AddMenuItemRequest(
+    string Name, string Price, string? Description, string Category,
+    string? CustomCategory, bool IsHighlight, bool IsLimited, int Position);
+
+public sealed record ReorderItemRequest(Guid Id, int Position);
+public sealed record ReorderMenuItemsRequest(List<ReorderItemRequest> Order);

@@ -7,6 +7,7 @@ public interface IReviewRepository
     Task<IReadOnlyList<Review>> GetByUserAsync(Guid userId, CancellationToken ct = default);
     Task<(IReadOnlyList<Review> Items, int Total)> GetAllAsync(int page, int limit, CancellationToken ct = default);
     Task<int> CountAsync(CancellationToken ct = default);
+    Task<int> CountSinceAsync(DateTime since, CancellationToken ct = default);
     Task AddAsync(Review review, CancellationToken ct = default);
     Task UpdateAsync(Review review, CancellationToken ct = default);
     Task DeleteAsync(Guid id, CancellationToken ct = default);

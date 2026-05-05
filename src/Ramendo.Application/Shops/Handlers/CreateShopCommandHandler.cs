@@ -13,7 +13,10 @@ public sealed class CreateShopCommandHandler(IRamenShopRepository shops)
         var dto = cmd.Dto;
         var shop = RamenShop.Create(
             dto.Name, dto.Description, dto.City, dto.District,
-            dto.DetailAddress, dto.Phone, dto.Website, dto.FacebookPageId, dto.Types);
+            dto.DetailAddress, dto.Phone, dto.Website, dto.FacebookPageId, dto.Instagram, dto.Types);
+
+        if (dto.IsVerified) shop.SetVerified(true);
+        if (dto.GoogleRating.HasValue) shop.SetGoogleRating(dto.GoogleRating.Value);
 
         if (dto.BusinessHours is not null)
             shop.SetBusinessHours(MapBusinessHours(dto.BusinessHours));

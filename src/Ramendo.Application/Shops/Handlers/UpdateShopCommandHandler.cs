@@ -14,7 +14,10 @@ public sealed class UpdateShopCommandHandler(IRamenShopRepository shops) : IRequ
 
         var dto = cmd.Dto;
         shop.Update(dto.Name, dto.Description, dto.City, dto.District,
-            dto.DetailAddress, dto.Phone, dto.Website, dto.FacebookPageId, dto.Types, dto.IsActive);
+            dto.DetailAddress, dto.Phone, dto.Website, dto.FacebookPageId, dto.Instagram, dto.Types, dto.IsActive);
+
+        shop.SetVerified(dto.IsVerified);
+        if (dto.GoogleRating.HasValue) shop.SetGoogleRating(dto.GoogleRating.Value);
 
         shop.SetBusinessHours(dto.BusinessHours is null ? null : CreateShopCommandHandler.MapBusinessHours(dto.BusinessHours));
         shop.SetNewsItems(dto.NewsItems?.Select(CreateShopCommandHandler.MapNewsItem) ?? []);

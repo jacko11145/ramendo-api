@@ -19,7 +19,7 @@ public sealed class GetShopByGuidQueryHandler(IRamenShopRepository shops)
 
     internal static RamenShopDetailDto ToDetailDto(RamenShop s) => new(
         s.Guid.ToString(), s.Name, s.Description,
-        s.City, s.District, s.DetailAddress, s.Phone, s.Website, s.FacebookPageId,
+        s.City, s.District, s.DetailAddress, s.Phone, s.Website, s.FacebookPageId, s.Instagram,
         [.. s.Images], s.CoverImage, s.Rating, s.GoogleRating, s.CriticRating,
         s.ReviewCount, [.. s.Types], s.IsActive, s.IsVerified,
         s.BusinessHours is null ? null : MapBusinessHours(s.BusinessHours),

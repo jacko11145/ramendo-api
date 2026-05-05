@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Ramendo.Infrastructure.Persistence;
@@ -12,9 +13,11 @@ using Ramendo.Infrastructure.Persistence;
 namespace Ramendo.Infrastructure.Migrations
 {
     [DbContext(typeof(RamendoDbContext))]
-    partial class RamendoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260505133126_AddInstagramToShop")]
+    partial class AddInstagramToShop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

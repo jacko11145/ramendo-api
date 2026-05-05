@@ -28,9 +28,12 @@ public sealed class RamenShopRepository(RamendoDbContext db) : IRamenShopReposit
             .FirstOrDefaultAsync(s => s.Guid == guid, ct);
 
     public async Task<(IReadOnlyList<RamenShop> Items, int Total)> GetPagedAsync(
-        string? city, string? district, string[]? types, string sort, int page, int limit, CancellationToken ct = default)
+        string? city, string? district, string[]? types, string sort, int page, int limit,
+        string? search = null, bool adminMode = false, CancellationToken ct = default)
     {
-        var q = db.RamenShops.Where(s => s.IsActive).AsQueryable();
+        var q = db.RamenShops.AsQueryable();
+        if (!adminMode) q = q.Where(s => s.IsActive);
+        if (!string.IsNullOrEmpty(search)) q = q.Where(s => s.Name.Contains(search));
         if (!string.IsNullOrEmpty(city)) q = q.Where(s => s.City == city);
         if (!string.IsNullOrEmpty(district)) q = q.Where(s => s.District == district);
         if (types?.Length > 0) q = q.Where(s => s.Types.Any(t => types.Contains(t)));

@@ -18,8 +18,14 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
+        var connectionString = config.GetConnectionString("DefaultConnection");
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new InvalidOperationException(
+                "ConnectionStrings:DefaultConnection is not configured. " +
+                "Set the environment variable 'ConnectionStrings__DefaultConnection'.");
+
         services.AddDbContext<RamendoDbContext>(options =>
-            options.UseNpgsql(config.GetConnectionString("DefaultConnection"))
+            options.UseNpgsql(connectionString)
                    .UseSnakeCaseNamingConvention());
 
         // Repositories

@@ -20,7 +20,7 @@ public sealed class ApproveSubmissionCommandHandler(
 
         // Create the shop from submission data
         var shop = RamenShop.Create(sub.Name, sub.Description, sub.City, sub.District,
-            sub.DetailAddress, sub.Phone, sub.Website, sub.FacebookPageId, [.. sub.Types]);
+            sub.DetailAddress, sub.Phone, sub.Website, sub.FacebookPageId, null, [.. sub.Types]);
         shop.SetImages(sub.Images);
         shop.Verify();
 

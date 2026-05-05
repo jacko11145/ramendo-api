@@ -11,6 +11,9 @@ public sealed class InvitationCodeRepository(RamendoDbContext db) : IInvitationC
     public async Task<IReadOnlyList<InvitationCode>> GetAllAsync(CancellationToken ct = default) =>
         await db.InvitationCodes.OrderByDescending(c => c.CreatedAt).ToListAsync(ct);
 
+    public Task<int> CountActiveAsync(CancellationToken ct = default) =>
+        db.InvitationCodes.CountAsync(c => c.IsActive, ct);
+
     public async Task AddAsync(InvitationCode code, CancellationToken ct = default)
     {
         db.InvitationCodes.Add(code); await db.SaveChangesAsync(ct);

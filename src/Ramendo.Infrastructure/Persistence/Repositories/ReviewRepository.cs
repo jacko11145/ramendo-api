@@ -31,6 +31,9 @@ public sealed class ReviewRepository(RamendoDbContext db) : IReviewRepository
 
     public Task<int> CountAsync(CancellationToken ct = default) => db.Reviews.CountAsync(ct);
 
+    public Task<int> CountSinceAsync(DateTime since, CancellationToken ct = default) =>
+        db.Reviews.CountAsync(r => r.CreatedAt >= since, ct);
+
     public async Task AddAsync(Review review, CancellationToken ct = default)
     {
         db.Reviews.Add(review); await db.SaveChangesAsync(ct);

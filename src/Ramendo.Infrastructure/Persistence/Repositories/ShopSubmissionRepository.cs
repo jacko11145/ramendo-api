@@ -19,6 +19,9 @@ public sealed class ShopSubmissionRepository(RamendoDbContext db) : IShopSubmiss
     public async Task<IReadOnlyList<ShopSubmission>> GetByUserAsync(Guid userId, CancellationToken ct = default) =>
         await db.ShopSubmissions.Where(s => s.UserId == userId).OrderByDescending(s => s.CreatedAt).ToListAsync(ct);
 
+    public Task<int> CountPendingAsync(CancellationToken ct = default) =>
+        db.ShopSubmissions.CountAsync(s => s.Status == SubmissionStatus.Pending, ct);
+
     public async Task AddAsync(ShopSubmission submission, CancellationToken ct = default)
     {
         db.ShopSubmissions.Add(submission); await db.SaveChangesAsync(ct);

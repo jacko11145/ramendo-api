@@ -15,6 +15,7 @@ public sealed class RamenShop : AggregateRoot
     public string? Phone { get; private set; }
     public string? Website { get; private set; }
     public string? FacebookPageId { get; private set; }
+    public string? Instagram { get; private set; }
     public List<string> Images { get; private set; } = [];
     public string? CoverImage { get; private set; }
     public float Rating { get; private set; }
@@ -36,14 +37,14 @@ public sealed class RamenShop : AggregateRoot
     private RamenShop() { }
 
     public static RamenShop Create(string name, string? description, string city, string district,
-        string detailAddress, string? phone, string? website, string? facebookPageId, string[] types)
+        string detailAddress, string? phone, string? website, string? facebookPageId, string? instagram, string[] types)
     {
         var shop = new RamenShop
         {
             Id = Guid.NewGuid(), Guid = Guid.NewGuid(),
             Name = name, Description = description,
             City = city, District = district, DetailAddress = detailAddress,
-            Phone = phone, Website = website, FacebookPageId = facebookPageId,
+            Phone = phone, Website = website, FacebookPageId = facebookPageId, Instagram = instagram,
             Types = [.. types], IsActive = true, IsVerified = false,
             CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow
         };
@@ -53,14 +54,16 @@ public sealed class RamenShop : AggregateRoot
 
     public void Update(string name, string? description, string city, string district,
         string detailAddress, string? phone, string? website, string? facebookPageId,
-        string[] types, bool isActive)
+        string? instagram, string[] types, bool isActive)
     {
         Name = name; Description = description; City = city; District = district;
         DetailAddress = detailAddress; Phone = phone; Website = website;
-        FacebookPageId = facebookPageId; Types = [.. types]; IsActive = isActive;
+        FacebookPageId = facebookPageId; Instagram = instagram; Types = [.. types]; IsActive = isActive;
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void SetVerified(bool value) { IsVerified = value; UpdatedAt = DateTime.UtcNow; }
+    public void SetGoogleRating(float value) { GoogleRating = value; UpdatedAt = DateTime.UtcNow; }
     public void SetCoverImage(string? url) { CoverImage = url; UpdatedAt = DateTime.UtcNow; }
     public void SetImages(IEnumerable<string> images) { Images = [.. images]; UpdatedAt = DateTime.UtcNow; }
     public void SetBusinessHours(BusinessHours? hours) { BusinessHours = hours; UpdatedAt = DateTime.UtcNow; }

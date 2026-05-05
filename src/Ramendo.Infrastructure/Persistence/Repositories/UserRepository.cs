@@ -31,6 +31,9 @@ public sealed class UserRepository(RamendoDbContext db) : IUserRepository
 
     public Task<int> CountAsync(CancellationToken ct = default) => db.Users.CountAsync(ct);
 
+    public Task<int> CountSinceAsync(DateTime since, CancellationToken ct = default) =>
+        db.Users.CountAsync(u => u.CreatedAt >= since, ct);
+
     public async Task AddAsync(User user, CancellationToken ct = default)
     {
         db.Users.Add(user);
