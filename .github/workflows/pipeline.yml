@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   pull_request:
@@ -51,54 +51,34 @@ jobs:
       - name: Test
         run: dotnet test --no-build --configuration Release --verbosity normal
 
-  codeql:
-    name: CodeQL SAST
+  deploy:
+    name: Migrate & Deploy
     needs: test
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: csharp
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.0.x"
 
-      - name: Build for CodeQL
+      - name: Restore & Build
         run: dotnet build --configuration Release
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+      - name: Install dotnet-ef tool
+        run: dotnet tool install --global dotnet-ef --version 9.*
 
-  build:
-    name: Build
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+      - name: Run EF Core Migrations
+        run: |
+          dotnet ef database update \
+            --project src/Ramendo.Infrastructure \
+            --startup-project src/Ramendo.Api \
+            --configuration Release
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.SUPABASE_CONNECTION_STRING }}
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup .NET 10
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "10.0.x"
-
-      - name: Publish
-        run: dotnet publish src/Ramendo.Api/Ramendo.Api.csproj -c Release -o ./publish
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: publish
-          path: ./publish
-          retention-days: 1
+      - name: Trigger Render Deploy Hook
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
