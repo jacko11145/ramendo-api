@@ -1,0 +1,12 @@
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\bin\Release\net10.0\Ramendo.Domain.deps.json
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\bin\Release\net10.0\Ramendo.Domain.dll
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\bin\Release\net10.0\Ramendo.Domain.pdb
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\obj\Release\net10.0\Ramendo.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\obj\Release\net10.0\Ramendo.Domain.AssemblyInfoInputs.cache
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\obj\Release\net10.0\Ramendo.Domain.AssemblyInfo.cs
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\obj\Release\net10.0\Ramendo.Domain.csproj.CoreCompileInputs.cache
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\obj\Release\net10.0\Ramendo.Domain.dll
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\obj\Release\net10.0\refint\Ramendo.Domain.dll
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\obj\Release\net10.0\Ramendo.Domain.pdb
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\obj\Release\net10.0\ref\Ramendo.Domain.dll
+D:\Company\remando\ramendo-api\src\Ramendo.Domain\obj\Release\net10.0\Ramendo.Domain.csproj.AssemblyReference.cache

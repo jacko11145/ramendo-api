@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Ramendo.Api/Ramendo.Api.csproj" />
+    <Project Path="src/Ramendo.Application/Ramendo.Application.csproj" />
+    <Project Path="src/Ramendo.Domain/Ramendo.Domain.csproj" />
+    <Project Path="src/Ramendo.Infrastructure/Ramendo.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Ramendo.Api.IntegrationTests/Ramendo.Api.IntegrationTests.csproj" />
+    <Project Path="tests/Ramendo.Application.Tests/Ramendo.Application.Tests.csproj" />
+    <Project Path="tests/Ramendo.Domain.Tests/Ramendo.Domain.Tests.csproj" />
+  </Folder>
+</Solution>

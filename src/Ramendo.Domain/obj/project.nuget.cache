@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "5u7hITl80X8=",
+  "success": true,
+  "projectFilePath": "D:\\Company\\remando\\ramendo-api\\src\\Ramendo.Domain\\Ramendo.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Jacko\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",
+    "C:\\Users\\Jacko\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\Jacko\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
