@@ -9,6 +9,7 @@ public interface IReviewRepository
     Task<int> CountAsync(CancellationToken ct = default);
     Task<int> CountSinceAsync(DateTime since, CancellationToken ct = default);
     Task<Dictionary<Guid, int>> GetCountsByUsersAsync(IEnumerable<Guid> userIds, CancellationToken ct = default);
+    Task<(float AvgRating, int Count)> GetRatingStatsAsync(Guid shopId, CancellationToken ct = default);
     Task AddAsync(Review review, CancellationToken ct = default);
     Task UpdateAsync(Review review, CancellationToken ct = default);
     Task DeleteAsync(Guid id, CancellationToken ct = default);

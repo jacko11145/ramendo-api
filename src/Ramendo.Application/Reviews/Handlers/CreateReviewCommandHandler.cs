@@ -29,6 +29,10 @@ public sealed class CreateReviewCommandHandler(
         var review = Review.Create(cmd.UserId, shop.Id, cmd.Dto.Rating, cmd.Dto.Comment, cmd.Dto.Images ?? [], cmd.Dto.VisitDate);
         await reviews.AddAsync(review, ct);
 
+        var (avg, count) = await reviews.GetRatingStatsAsync(shop.Id, ct);
+        shop.UpdateRating(avg, count);
+        await shops.UpdateAsync(shop, ct);
+
         return new ReviewDto(
             review.Id.ToString(), review.Rating, review.Content,
             1, review.VisitDate?.ToString("yyyy-MM-dd"),

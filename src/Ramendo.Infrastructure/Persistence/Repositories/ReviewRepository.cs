@@ -44,6 +44,12 @@ public sealed class ReviewRepository(RamendoDbContext db) : IReviewRepository
             .ToDictionaryAsync(x => x.UserId, x => x.Count, ct);
     }
 
+    public async Task<(float AvgRating, int Count)> GetRatingStatsAsync(Guid shopId, CancellationToken ct = default)
+    {
+        var reviews = await db.Reviews.Where(r => r.RamenShopId == shopId).Select(r => r.Rating).ToListAsync(ct);
+        return reviews.Count == 0 ? (0f, 0) : ((float)reviews.Average(), reviews.Count);
+    }
+
     public async Task AddAsync(Review review, CancellationToken ct = default)
     {
         db.Reviews.Add(review); await db.SaveChangesAsync(ct);
