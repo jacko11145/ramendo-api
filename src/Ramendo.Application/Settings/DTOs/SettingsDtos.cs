@@ -1,7 +1,7 @@
 namespace Ramendo.Application.Settings.DTOs;
 
 public sealed record PermissionSettingsDto(
-    int MinLevelToSubmitShop, int MinLevelToWriteReview, int MinLevelToRateMenuItem);
+    int MinLevelToSubmitShop, int MinLevelToReview, int MinLevelToFavorite);
 
 public sealed record DashboardStatsDto(
     int TotalUsers, int TotalShops, int TotalReviews,
