@@ -1,6 +1,4 @@
-using Ramendo.Domain.Aggregates.Shops;
-
-namespace Ramendo.Infrastructure.Services;
+namespace Ramendo.Domain.Aggregates.Shops;
 
 public static class BusinessHoursService
 {
@@ -30,10 +28,7 @@ public static class BusinessHoursService
     {
         if (!day.IsOpen) return false;
         if (day.IsSplit)
-        {
-            return (InRange(day.LunchOpen, day.LunchClose, now) ||
-                    InRange(day.DinnerOpen, day.DinnerClose, now));
-        }
+            return InRange(day.LunchOpen, day.LunchClose, now) || InRange(day.DinnerOpen, day.DinnerClose, now);
         return InRange(day.Open, day.Close, now);
     }
 

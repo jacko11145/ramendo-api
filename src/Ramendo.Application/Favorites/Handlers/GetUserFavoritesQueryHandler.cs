@@ -21,9 +21,9 @@ public sealed class GetUserFavoritesQueryHandler(
             if (shop is not null)
             {
                 result.Add(new FavoriteShopDto(
-                    shop.Id.ToString(), shop.Guid.ToString(), shop.Name,
-                    shop.City, shop.District, shop.CoverImage, shop.Rating,
-                    [.. shop.Types], fav.CreatedAt));
+                    shop.Guid.ToString(), shop.Name, shop.City, shop.District,
+                    shop.CoverImage, BusinessHoursService.IsOpenNow(shop.BusinessHours),
+                    fav.CreatedAt));
             }
         }
         return result;
