@@ -14,10 +14,10 @@ public sealed class BusinessHours : ValueObject
     public DayHours? Saturday { get; }
     public DayHours? Sunday { get; }
 
-    public BusinessHours(DayHours? mon, DayHours? tue, DayHours? wed, DayHours? thu, DayHours? fri, DayHours? sat, DayHours? sun)
+    public BusinessHours(DayHours? monday, DayHours? tuesday, DayHours? wednesday, DayHours? thursday, DayHours? friday, DayHours? saturday, DayHours? sunday)
     {
-        Monday = mon; Tuesday = tue; Wednesday = wed; Thursday = thu;
-        Friday = fri; Saturday = sat; Sunday = sun;
+        Monday = monday; Tuesday = tuesday; Wednesday = wednesday; Thursday = thursday;
+        Friday = friday; Saturday = saturday; Sunday = sunday;
     }
 
     protected override IEnumerable<object?> GetEqualityComponents()
