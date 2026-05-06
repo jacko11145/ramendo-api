@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Ramendo.Domain.Common;
 
 namespace Ramendo.Domain.Aggregates.Shops;
@@ -14,6 +15,7 @@ public sealed class BusinessHours : ValueObject
     public DayHours? Saturday { get; }
     public DayHours? Sunday { get; }
 
+    [JsonConstructor]
     public BusinessHours(DayHours? monday, DayHours? tuesday, DayHours? wednesday, DayHours? thursday, DayHours? friday, DayHours? saturday, DayHours? sunday)
     {
         Monday = monday; Tuesday = tuesday; Wednesday = wednesday; Thursday = thursday;

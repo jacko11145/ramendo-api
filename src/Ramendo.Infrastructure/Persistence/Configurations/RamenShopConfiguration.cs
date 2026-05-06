@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Ramendo.Domain.Aggregates.Shops;
@@ -6,6 +7,12 @@ namespace Ramendo.Infrastructure.Persistence.Configurations;
 
 public sealed class RamenShopConfiguration : IEntityTypeConfiguration<RamenShop>
 {
+    private static readonly JsonSerializerOptions _jsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    };
+
     public void Configure(EntityTypeBuilder<RamenShop> builder)
     {
         builder.ToTable("RamenShop");
@@ -34,14 +41,14 @@ public sealed class RamenShopConfiguration : IEntityTypeConfiguration<RamenShop>
         builder.Property(s => s.BusinessHours)
             .HasColumnType("jsonb")
             .HasConversion(
-                v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions?)null),
-                v => System.Text.Json.JsonSerializer.Deserialize<BusinessHours>(v, (System.Text.Json.JsonSerializerOptions?)null));
+                v => JsonSerializer.Serialize(v, _jsonOptions),
+                v => JsonSerializer.Deserialize<BusinessHours>(v, _jsonOptions));
 
         builder.Property(s => s.NewsItems)
             .HasColumnType("jsonb")
             .HasConversion(
-                v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions?)null),
-                v => System.Text.Json.JsonSerializer.Deserialize<List<NewsItem>>(v, (System.Text.Json.JsonSerializerOptions?)null) ?? new());
+                v => JsonSerializer.Serialize(v, _jsonOptions),
+                v => JsonSerializer.Deserialize<List<NewsItem>>(v, _jsonOptions) ?? new());
 
         builder.HasMany(s => s.MenuItems)
             .WithOne()
