@@ -34,6 +34,16 @@ public sealed class ReviewRepository(RamendoDbContext db) : IReviewRepository
     public Task<int> CountSinceAsync(DateTime since, CancellationToken ct = default) =>
         db.Reviews.CountAsync(r => r.CreatedAt >= since, ct);
 
+    public async Task<Dictionary<Guid, int>> GetCountsByUsersAsync(IEnumerable<Guid> userIds, CancellationToken ct = default)
+    {
+        var idList = userIds.ToList();
+        return await db.Reviews
+            .Where(r => idList.Contains(r.UserId))
+            .GroupBy(r => r.UserId)
+            .Select(g => new { UserId = g.Key, Count = g.Count() })
+            .ToDictionaryAsync(x => x.UserId, x => x.Count, ct);
+    }
+
     public async Task AddAsync(Review review, CancellationToken ct = default)
     {
         db.Reviews.Add(review); await db.SaveChangesAsync(ct);
