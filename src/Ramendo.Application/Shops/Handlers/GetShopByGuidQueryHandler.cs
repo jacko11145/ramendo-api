@@ -27,7 +27,7 @@ public sealed class GetShopByGuidQueryHandler(IRamenShopRepository shops)
         s.MenuItems.OrderBy(m => m.Position).Select(MapMenuItem).ToArray(),
         s.CreatedAt);
 
-    private static BusinessHoursDto MapBusinessHours(BusinessHours bh) => new(
+    internal static BusinessHoursDto MapBusinessHours(BusinessHours bh) => new(
         bh.Monday is null ? null : MapDay(bh.Monday),
         bh.Tuesday is null ? null : MapDay(bh.Tuesday),
         bh.Wednesday is null ? null : MapDay(bh.Wednesday),
@@ -36,10 +36,10 @@ public sealed class GetShopByGuidQueryHandler(IRamenShopRepository shops)
         bh.Saturday is null ? null : MapDay(bh.Saturday),
         bh.Sunday is null ? null : MapDay(bh.Sunday));
 
-    private static DayHoursDto MapDay(DayHours d) => new(
+    internal static DayHoursDto MapDay(DayHours d) => new(
         d.IsOpen, d.IsSplit, d.Open, d.Close, d.LunchOpen, d.LunchClose, d.DinnerOpen, d.DinnerClose);
 
-    private static NewsItemDto MapNewsItem(NewsItem n) => new(n.Title, n.Content, n.StartDate, n.EndDate, n.CreatedAt);
+    internal static NewsItemDto MapNewsItem(NewsItem n) => new(n.Title, n.Content, n.StartDate, n.EndDate, n.CreatedAt);
 
     private static MenuItemDto MapMenuItem(MenuItem m) => new(
         m.Id.ToString(), m.Name, m.Price, m.Description, m.Category,

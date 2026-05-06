@@ -1,12 +1,9 @@
 using System.Security.Claims;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ramendo.Application.Auth.DTOs;
 using Ramendo.Application.Common;
-using Ramendo.Application.Reviews.Queries;
 using Ramendo.Application.Reviews.DTOs;
-using Ramendo.Application.Submissions.Queries;
 using Ramendo.Application.Submissions.DTOs;
 using Ramendo.Domain.Aggregates.Users;
 
@@ -15,7 +12,7 @@ namespace Ramendo.Api.Controllers;
 [ApiController]
 [Route("api/user")]
 [Authorize]
-public sealed class UserController(IUserRepository users, IMediator mediator) : ControllerBase
+public sealed class UserController(IUserRepository users) : ControllerBase
 {
     [HttpGet("profile")]
     public async Task<ActionResult<ApiResponse<UserSessionDto>>> GetProfile(CancellationToken ct)

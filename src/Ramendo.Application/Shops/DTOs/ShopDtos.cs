@@ -3,7 +3,8 @@ namespace Ramendo.Application.Shops.DTOs;
 public sealed record RamenShopListDto(
     string Id, string Name, string City, string District, string DetailAddress,
     string? CoverImage, float Rating, float GoogleRating, int ReviewCount,
-    string[] Types, bool IsActive, bool IsVerified, string? Phone, string? Instagram);
+    string[] Types, bool IsActive, bool IsVerified, string? Phone, string? Instagram,
+    BusinessHoursDto? BusinessHours, NewsItemDto[] NewsItems);
 
 public sealed record RamenShopDetailDto(
     string Id, string Name, string? Description, string City, string District,

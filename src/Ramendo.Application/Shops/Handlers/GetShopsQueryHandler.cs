@@ -19,5 +19,7 @@ public sealed class GetShopsQueryHandler(IRamenShopRepository shops)
     private static RamenShopListDto ToListDto(RamenShop s) => new(
         s.Guid.ToString(), s.Name, s.City, s.District, s.DetailAddress,
         s.CoverImage, s.Rating, s.GoogleRating, s.ReviewCount,
-        [.. s.Types], s.IsActive, s.IsVerified, s.Phone, s.Instagram);
+        [.. s.Types], s.IsActive, s.IsVerified, s.Phone, s.Instagram,
+        s.BusinessHours is null ? null : GetShopByGuidQueryHandler.MapBusinessHours(s.BusinessHours),
+        s.NewsItems.Select(GetShopByGuidQueryHandler.MapNewsItem).ToArray());
 }
