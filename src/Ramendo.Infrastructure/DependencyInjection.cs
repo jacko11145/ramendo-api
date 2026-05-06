@@ -42,6 +42,7 @@ public static class DependencyInjection
         services.AddScoped<IPermissionService, PermissionService>();
 
         // Application Services (interfaces)
+        services.AddScoped<IImageUploadService, CloudinaryImageUploadService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IGoogleTokenValidator, GoogleTokenValidatorService>();

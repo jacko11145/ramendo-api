@@ -5,13 +5,14 @@ using Ramendo.Application.Common;
 using Ramendo.Application.Shops.Commands;
 using Ramendo.Application.Shops.DTOs;
 using Ramendo.Application.Shops.Queries;
+using Ramendo.Domain.Aggregates.Shops;
 
 namespace Ramendo.Api.Controllers.Admin;
 
 [ApiController]
 [Route("api/admin/shops")]
 [Authorize(Roles = "Admin")]
-public sealed class AdminShopsController(IMediator mediator) : ControllerBase
+public sealed class AdminShopsController(IMediator mediator, IRamenShopRepository shops, IImageUploadService images) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<ApiResponse<PagedResult<RamenShopListDto>>>> GetShops(
@@ -51,6 +52,77 @@ public sealed class AdminShopsController(IMediator mediator) : ControllerBase
         return Ok(ApiResponse.Ok("Shop deleted."));
     }
 
+    [HttpPost("{guid:guid}/cover-image")]
+    [Consumes("multipart/form-data")]
+    public async Task<ActionResult<ApiResponse<string>>> UploadCoverImage(
+        Guid guid, IFormFile file, CancellationToken ct)
+    {
+        var shop = await shops.GetByGuidAsync(guid, ct)
+            ?? throw new NotFoundException("RamenShop", guid);
+
+        await using var stream = file.OpenReadStream();
+        var url = await images.UploadAsync(stream, file.FileName, $"ramendo/shops/{guid}/cover", ct);
+
+        if (shop.CoverImage is not null)
+            await images.DeleteAsync(shop.CoverImage, ct);
+
+        shop.SetCoverImage(url);
+        await shops.UpdateAsync(shop, ct);
+        return Ok(ApiResponse<string>.Ok(url));
+    }
+
+    [HttpDelete("{guid:guid}/cover-image")]
+    public async Task<ActionResult<ApiResponse>> DeleteCoverImage(Guid guid, CancellationToken ct)
+    {
+        var shop = await shops.GetByGuidAsync(guid, ct)
+            ?? throw new NotFoundException("RamenShop", guid);
+
+        if (shop.CoverImage is not null)
+        {
+            await images.DeleteAsync(shop.CoverImage, ct);
+            shop.SetCoverImage(null);
+            await shops.UpdateAsync(shop, ct);
+        }
+        return Ok(ApiResponse.Ok("Cover image removed."));
+    }
+
+    [HttpPost("{guid:guid}/gallery")]
+    [Consumes("multipart/form-data")]
+    public async Task<ActionResult<ApiResponse<string[]>>> UploadGalleryImages(
+        Guid guid, IFormFileCollection files, CancellationToken ct)
+    {
+        var shop = await shops.GetByGuidAsync(guid, ct)
+            ?? throw new NotFoundException("RamenShop", guid);
+
+        var urls = new List<string>();
+        foreach (var file in files)
+        {
+            await using var stream = file.OpenReadStream();
+            var url = await images.UploadAsync(stream, file.FileName, $"ramendo/shops/{guid}/gallery", ct);
+            urls.Add(url);
+        }
+
+        shop.SetImages([.. shop.Images, .. urls]);
+        await shops.UpdateAsync(shop, ct);
+        return Ok(ApiResponse<string[]>.Ok([.. shop.Images]));
+    }
+
+    [HttpDelete("{guid:guid}/gallery")]
+    public async Task<ActionResult<ApiResponse<string[]>>> DeleteGalleryImage(
+        Guid guid, [FromBody] DeleteGalleryImageRequest req, CancellationToken ct)
+    {
+        var shop = await shops.GetByGuidAsync(guid, ct)
+            ?? throw new NotFoundException("RamenShop", guid);
+
+        if (shop.Images.Contains(req.Url))
+        {
+            await images.DeleteAsync(req.Url, ct);
+            shop.SetImages(shop.Images.Where(u => u != req.Url));
+            await shops.UpdateAsync(shop, ct);
+        }
+        return Ok(ApiResponse<string[]>.Ok([.. shop.Images]));
+    }
+
     [HttpPost("{guid:guid}/menu")]
     public async Task<ActionResult<ApiResponse<string>>> AddMenuItem(
         Guid guid, [FromBody] AddMenuItemRequest req, CancellationToken ct)
@@ -78,3 +150,5 @@ public sealed class AdminShopsController(IMediator mediator) : ControllerBase
         return Ok(ApiResponse.Ok("Menu item deleted."));
     }
 }
+
+public sealed record DeleteGalleryImageRequest(string Url);
