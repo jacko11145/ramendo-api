@@ -7,7 +7,7 @@ public sealed class RefreshTokenConfiguration : IEntityTypeConfiguration<Refresh
 {
     public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
-        builder.ToTable("refresh_tokens");
+        builder.ToTable("RefreshToken");
         builder.HasKey(r => r.Id);
         builder.HasIndex(r => r.Token).IsUnique();
         builder.Property(r => r.IsRevoked).HasDefaultValue(false);
