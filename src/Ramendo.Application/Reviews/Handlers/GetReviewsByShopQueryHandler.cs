@@ -22,7 +22,9 @@ public sealed class GetReviewsByShopQueryHandler(
     }
 
     private static ReviewDto ToDto(Review r) => new(
-        r.Id.ToString(), r.Rating, r.Content, [.. r.Images],
+        r.Id.ToString(), r.Rating, r.Content,
+        r.User?.Experience.Level ?? 1,
+        r.VisitDate?.ToString("yyyy-MM-dd"),
         r.UserId.ToString(), r.User?.Name, r.User?.Image,
         r.RamenShopId.ToString(), r.CreatedAt);
 }

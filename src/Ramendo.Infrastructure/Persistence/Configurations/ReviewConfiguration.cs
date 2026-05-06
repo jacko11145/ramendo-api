@@ -10,7 +10,7 @@ public sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
     {
         builder.ToTable("Review");
         builder.HasKey(r => r.Id);
-        builder.Property(r => r.Content).IsRequired();
+        builder.Property(r => r.Content).IsRequired(false);
         builder.Property(r => r.Rating).IsRequired();
         builder.Property(r => r.UserId).IsRequired();
         builder.Property(r => r.RamenShopId).IsRequired();

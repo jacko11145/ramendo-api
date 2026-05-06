@@ -17,7 +17,7 @@ public sealed class GetUsersQueryHandler(IUserRepository users)
     }
 
     private static UserListDto ToDto(User u) => new(
-        u.Id.ToString(), u.Name, u.Email, u.Role.ToString(),
+        u.Id.ToString(), u.Name, u.Email, u.Image, u.Role.ToString(),
         u.IsActive, u.VIP.IsActive, u.VIP.MembershipExpiry,
         u.Experience.Points, u.Experience.Level, 0, u.CreatedAt);
 }

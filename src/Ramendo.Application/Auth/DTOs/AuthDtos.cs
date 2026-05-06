@@ -1,6 +1,6 @@
 namespace Ramendo.Application.Auth.DTOs;
 
-public sealed record RegisterRequestDto(string Email, string Password, string? Name, string InvitationCode);
+public sealed record RegisterRequestDto(string Email, string Password, string? Name, string? InvitationCode);
 
 public sealed record LoginRequestDto(string Email, string Password);
 

@@ -52,6 +52,13 @@ public sealed class User : AggregateRoot
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void ApplyExperienceDelta(int delta)
+    {
+        var newPoints = Math.Max(0, Experience.Points + delta);
+        Experience = ExperiencePoints.Of(newPoints);
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     public void ChangeRole(UserRole role)
     {
         Role = role;

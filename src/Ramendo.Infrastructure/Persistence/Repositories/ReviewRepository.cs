@@ -23,7 +23,7 @@ public sealed class ReviewRepository(RamendoDbContext db) : IReviewRepository
 
     public async Task<(IReadOnlyList<Review> Items, int Total)> GetAllAsync(int page, int limit, CancellationToken ct = default)
     {
-        var q = db.Reviews.OrderByDescending(r => r.CreatedAt);
+        var q = db.Reviews.Include(r => r.User).OrderByDescending(r => r.CreatedAt);
         var total = await q.CountAsync(ct);
         var items = await q.Skip((page - 1) * limit).Take(limit).ToListAsync(ct);
         return (items, total);

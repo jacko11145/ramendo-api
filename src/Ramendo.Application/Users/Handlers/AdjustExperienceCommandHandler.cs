@@ -12,7 +12,7 @@ public sealed class AdjustExperienceCommandHandler(IUserRepository users) : IReq
         var user = await users.GetByIdAsync(cmd.UserId, ct)
             ?? throw new NotFoundException("User", cmd.UserId);
 
-        user.AdjustExperience(cmd.Points);
+        user.ApplyExperienceDelta(cmd.Delta);
         await users.UpdateAsync(user, ct);
     }
 }

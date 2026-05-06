@@ -1,8 +1,8 @@
 namespace Ramendo.Application.Users.DTOs;
 
 public sealed record UserListDto(
-    string Id, string? Name, string Email, string Role, bool IsActive,
-    bool IsVIP, DateTime? MembershipExpiry, int ExperiencePoints, int Level,
+    string Id, string? Name, string Email, string? Image, string Role, bool IsActive,
+    bool IsVip, DateTime? VipExpiry, int ExperiencePoints, int Level,
     int ReviewCount, DateTime CreatedAt);
 
 public sealed record UserDetailDto(
@@ -16,4 +16,6 @@ public sealed record UpdateUserRoleDto(string Role);
 
 public sealed record SetVipDto(bool IsVIP, DateTime? MembershipExpiry);
 
-public sealed record AdjustExperienceDto(int Points);
+public sealed record AdjustExperienceDto(int Delta, string? Reason = null);
+
+public sealed record UpdateUserStatusDto(bool IsActive);

@@ -38,9 +38,9 @@ public sealed class AdminUsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:guid}/status")]
-    public async Task<ActionResult<ApiResponse>> UpdateStatus(Guid id, [FromBody] bool isActive, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse>> UpdateStatus(Guid id, [FromBody] UpdateUserStatusDto dto, CancellationToken ct)
     {
-        await mediator.Send(new UpdateUserStatusCommand(id, isActive), ct);
+        await mediator.Send(new UpdateUserStatusCommand(id, dto.IsActive), ct);
         return Ok(ApiResponse.Ok());
     }
 
@@ -54,7 +54,7 @@ public sealed class AdminUsersController(IMediator mediator) : ControllerBase
     [HttpPut("{id:guid}/experience")]
     public async Task<ActionResult<ApiResponse>> AdjustExperience(Guid id, [FromBody] AdjustExperienceDto dto, CancellationToken ct)
     {
-        await mediator.Send(new AdjustExperienceCommand(id, dto.Points), ct);
+        await mediator.Send(new AdjustExperienceCommand(id, dto.Delta), ct);
         return Ok(ApiResponse.Ok());
     }
 }

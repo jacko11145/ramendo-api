@@ -18,16 +18,19 @@ public sealed class RegisterUserCommandHandler(
         if (await users.GetByEmailAsync(cmd.Email, ct) is not null)
             throw new ConflictException("Email already registered.");
 
-        var code = await codes.GetByCodeAsync(cmd.InvitationCode, ct)
-            ?? throw new NotFoundException("InvitationCode", cmd.InvitationCode);
+        if (!string.IsNullOrWhiteSpace(cmd.InvitationCode))
+        {
+            var code = await codes.GetByCodeAsync(cmd.InvitationCode, ct)
+                ?? throw new NotFoundException("InvitationCode", cmd.InvitationCode);
 
-        if (!code.IsValid())
-            throw new ForbiddenException("Invitation code is invalid or expired.");
+            if (!code.IsValid())
+                throw new ForbiddenException("Invitation code is invalid or expired.");
+
+            code.Use();
+            await codes.UpdateAsync(code, ct);
+        }
 
         var user = User.Create(cmd.Email, hasher.Hash(cmd.Password), cmd.Name, cmd.InvitationCode);
-
-        code.Use();
-        await codes.UpdateAsync(code, ct);
         await users.AddAsync(user, ct);
 
         var access = jwt.GenerateAccessToken(user);

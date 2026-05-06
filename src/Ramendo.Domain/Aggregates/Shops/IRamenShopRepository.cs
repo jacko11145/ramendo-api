@@ -8,6 +8,7 @@ public interface IRamenShopRepository
         string? city, string? district, string[]? types, string sort, int page, int limit,
         string? search = null, bool adminMode = false, CancellationToken ct = default);
     Task<IReadOnlyList<RamenShop>> GetForRankingsAsync(CancellationToken ct = default);
+    Task<IReadOnlyList<RamenShop>> GetManyByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default);
     Task<int> CountAsync(CancellationToken ct = default);
     Task AddAsync(RamenShop shop, CancellationToken ct = default);
     Task UpdateAsync(RamenShop shop, CancellationToken ct = default);

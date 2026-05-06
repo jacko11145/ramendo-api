@@ -16,11 +16,12 @@ public sealed class CreateReviewCommandHandler(
         var shop = await shops.GetByGuidAsync(cmd.Dto.ShopGuid, ct)
             ?? throw new NotFoundException("RamenShop", cmd.Dto.ShopGuid);
 
-        var review = Review.Create(cmd.UserId, shop.Id, cmd.Dto.Rating, cmd.Dto.Content, cmd.Dto.Images);
+        var review = Review.Create(cmd.UserId, shop.Id, cmd.Dto.Rating, cmd.Dto.Comment, cmd.Dto.Images ?? [], cmd.Dto.VisitDate);
         await reviews.AddAsync(review, ct);
 
         return new ReviewDto(
-            review.Id.ToString(), review.Rating, review.Content, [.. review.Images],
+            review.Id.ToString(), review.Rating, review.Content,
+            1, review.VisitDate?.ToString("yyyy-MM-dd"),
             review.UserId.ToString(), null, null,
             review.RamenShopId.ToString(), review.CreatedAt);
     }

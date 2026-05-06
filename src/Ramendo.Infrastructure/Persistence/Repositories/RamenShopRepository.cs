@@ -67,4 +67,10 @@ public sealed class RamenShopRepository(RamendoDbContext db) : IRamenShopReposit
         var shop = await db.RamenShops.FindAsync([id], ct);
         if (shop != null) { db.RamenShops.Remove(shop); await db.SaveChangesAsync(ct); }
     }
+
+    public async Task<IReadOnlyList<RamenShop>> GetManyByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default)
+    {
+        var idList = ids.ToList();
+        return await db.RamenShops.Where(s => idList.Contains(s.Id)).ToListAsync(ct);
+    }
 }
