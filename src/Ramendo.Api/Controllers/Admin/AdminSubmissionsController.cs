@@ -16,9 +16,10 @@ public sealed class AdminSubmissionsController(IMediator mediator) : ControllerB
 {
     [HttpGet]
     public async Task<ActionResult<ApiResponse<PagedResult<ShopSubmissionDto>>>> GetAll(
-        [FromQuery] int page = 1, [FromQuery] int limit = 20, CancellationToken ct = default)
+        [FromQuery] int page = 1, [FromQuery] int limit = 20,
+        [FromQuery] string? status = null, CancellationToken ct = default)
     {
-        var result = await mediator.Send(new GetSubmissionsQuery(page, limit), ct);
+        var result = await mediator.Send(new GetSubmissionsQuery(page, limit, status), ct);
         return Ok(ApiResponse<PagedResult<ShopSubmissionDto>>.Ok(result));
     }
 
@@ -31,10 +32,10 @@ public sealed class AdminSubmissionsController(IMediator mediator) : ControllerB
     }
 
     [HttpPut("{id:guid}/reject")]
-    public async Task<ActionResult<ApiResponse>> Reject(Guid id, [FromBody] string? feedback, CancellationToken ct)
+    public async Task<ActionResult<ApiResponse>> Reject(Guid id, [FromBody] RejectSubmissionRequest body, CancellationToken ct)
     {
         var adminId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        await mediator.Send(new RejectSubmissionCommand(id, adminId, feedback), ct);
+        await mediator.Send(new RejectSubmissionCommand(id, adminId, body.Reason), ct);
         return Ok(ApiResponse.Ok("Submission rejected."));
     }
 }

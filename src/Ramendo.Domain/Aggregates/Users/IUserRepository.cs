@@ -3,6 +3,7 @@ namespace Ramendo.Domain.Aggregates.Users;
 public interface IUserRepository
 {
     Task<User?> GetByIdAsync(Guid id, CancellationToken ct = default);
+    Task<IReadOnlyList<User>> GetManyByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default);
     Task<User?> GetByEmailAsync(string email, CancellationToken ct = default);
     Task<(IReadOnlyList<User> Items, int Total)> GetPagedAsync(
         int page, int limit, string? search = null, string? role = null, CancellationToken ct = default);

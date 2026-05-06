@@ -8,9 +8,11 @@ public sealed class ShopSubmissionRepository(RamendoDbContext db) : IShopSubmiss
     public Task<ShopSubmission?> GetByIdAsync(Guid id, CancellationToken ct = default) =>
         db.ShopSubmissions.FirstOrDefaultAsync(s => s.Id == id, ct);
 
-    public async Task<(IReadOnlyList<ShopSubmission> Items, int Total)> GetAllAsync(int page, int limit, CancellationToken ct = default)
+    public async Task<(IReadOnlyList<ShopSubmission> Items, int Total)> GetAllAsync(int page, int limit, SubmissionStatus? status, CancellationToken ct = default)
     {
-        var q = db.ShopSubmissions.OrderByDescending(s => s.CreatedAt);
+        var q = db.ShopSubmissions.AsQueryable();
+        if (status.HasValue) q = q.Where(s => s.Status == status.Value);
+        q = q.OrderByDescending(s => s.CreatedAt);
         var total = await q.CountAsync(ct);
         var items = await q.Skip((page - 1) * limit).Take(limit).ToListAsync(ct);
         return (items, total);

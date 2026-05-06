@@ -11,9 +11,8 @@ public sealed class CreateSubmissionCommandHandler(IShopSubmissionRepository sub
     {
         var dto = cmd.Dto;
         var submission = ShopSubmission.Create(
-            cmd.UserId, dto.Name, dto.Description, dto.City, dto.District,
-            dto.DetailAddress, dto.Phone, dto.Website, dto.FacebookPageId,
-            dto.Images, dto.Types);
+            cmd.UserId, dto.ShopName, dto.Note, dto.City, dto.District,
+            dto.Address, null, null, null, [], []);
 
         await submissions.AddAsync(submission, ct);
         return submission.Id.ToString();
