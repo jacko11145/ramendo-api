@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ramendo.Application.Common;
 using Ramendo.Application.Settings.DTOs;
+using Ramendo.Domain.Aggregates.InvitationCodes;
+using Ramendo.Domain.Aggregates.Reviews;
+using Ramendo.Domain.Aggregates.Shops;
+using Ramendo.Domain.Aggregates.Submissions;
+using Ramendo.Domain.Aggregates.Users;
 using Ramendo.Infrastructure.Persistence;
 
 namespace Ramendo.Api.Controllers.Admin;
@@ -14,26 +19,29 @@ public sealed class AdminDatabaseController(RamendoDbContext db) : ControllerBas
 {
     private sealed record TableSizeRow(string TableName, int SizeKb);
 
+    private string Tbl<T>() where T : class =>
+        db.Model.FindEntityType(typeof(T))!.GetTableName()!;
+
     [HttpGet("stats")]
     public async Task<ActionResult<ApiResponse<List<TableStatsDto>>>> GetStats(CancellationToken ct)
     {
         var counts = new (string Name, int Count)[]
         {
-            ("users",               await db.Users.CountAsync(ct)),
-            ("ramen_shops",         await db.RamenShops.CountAsync(ct)),
-            ("menu_items",          await db.MenuItems.CountAsync(ct)),
-            ("option_types",        await db.OptionTypes.CountAsync(ct)),
-            ("option_values",       await db.OptionValues.CountAsync(ct)),
-            ("item_options",        await db.ItemOptions.CountAsync(ct)),
-            ("reviews",             await db.Reviews.CountAsync(ct)),
-            ("menu_item_ratings",   await db.MenuItemRatings.CountAsync(ct)),
-            ("review_options",      await db.ReviewOptions.CountAsync(ct)),
-            ("favorites",           await db.Favorites.CountAsync(ct)),
-            ("shop_submissions",    await db.ShopSubmissions.CountAsync(ct)),
-            ("invitation_codes",    await db.InvitationCodes.CountAsync(ct)),
-            ("user_shops",          await db.UserShops.CountAsync(ct)),
-            ("refresh_tokens",      await db.RefreshTokens.CountAsync(ct)),
-            ("system_settings",     await db.SystemSettings.CountAsync(ct)),
+            (Tbl<User>(),            await db.Users.CountAsync(ct)),
+            (Tbl<RamenShop>(),       await db.RamenShops.CountAsync(ct)),
+            (Tbl<MenuItem>(),        await db.MenuItems.CountAsync(ct)),
+            (Tbl<OptionType>(),      await db.OptionTypes.CountAsync(ct)),
+            (Tbl<OptionValue>(),     await db.OptionValues.CountAsync(ct)),
+            (Tbl<ItemOption>(),      await db.ItemOptions.CountAsync(ct)),
+            (Tbl<Review>(),          await db.Reviews.CountAsync(ct)),
+            (Tbl<MenuItemRating>(),  await db.MenuItemRatings.CountAsync(ct)),
+            (Tbl<ReviewOption>(),    await db.ReviewOptions.CountAsync(ct)),
+            (Tbl<Favorite>(),        await db.Favorites.CountAsync(ct)),
+            (Tbl<ShopSubmission>(),  await db.ShopSubmissions.CountAsync(ct)),
+            (Tbl<InvitationCode>(),  await db.InvitationCodes.CountAsync(ct)),
+            (Tbl<UserShop>(),        await db.UserShops.CountAsync(ct)),
+            (Tbl<RefreshToken>(),    await db.RefreshTokens.CountAsync(ct)),
+            (Tbl<SystemSetting>(),   await db.SystemSettings.CountAsync(ct)),
         };
 
         var sizes = await db.Database
