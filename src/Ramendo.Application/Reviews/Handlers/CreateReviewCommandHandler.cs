@@ -33,6 +33,9 @@ public sealed class CreateReviewCommandHandler(
         shop.UpdateRating(avg, count);
         await shops.UpdateAsync(shop, ct);
 
+        user.ApplyExperienceDelta(10);
+        await users.UpdateAsync(user, ct);
+
         return new ReviewDto(
             review.Id.ToString(), review.Rating, review.Content,
             1, review.VisitDate?.ToString("yyyy-MM-dd"),
