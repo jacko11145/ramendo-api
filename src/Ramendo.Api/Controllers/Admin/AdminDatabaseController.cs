@@ -38,13 +38,16 @@ public sealed class AdminDatabaseController(RamendoDbContext db) : ControllerBas
 
         var sizes = await db.Database
             .SqlQueryRaw<TableSizeRow>("""
-                SELECT relname AS "TableName",
-                       CAST(pg_total_relation_size(relid) / 1024 AS INTEGER) AS "SizeKb"
+                SELECT relname AS table_name,
+                       CAST(pg_total_relation_size(relid) / 1024 AS INTEGER) AS size_kb
                 FROM pg_catalog.pg_statio_user_tables
+                WHERE schemaname = 'public'
                 """)
             .ToListAsync(ct);
 
-        var sizeMap = sizes.ToDictionary(s => s.TableName, s => s.SizeKb);
+        var sizeMap = sizes
+            .GroupBy(s => s.TableName)
+            .ToDictionary(g => g.Key, g => g.Sum(s => s.SizeKb));
 
         var result = counts
             .Select(c => new TableStatsDto(c.Name, c.Count, sizeMap.GetValueOrDefault(c.Name, 0)))
