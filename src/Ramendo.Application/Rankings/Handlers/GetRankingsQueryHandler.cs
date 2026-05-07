@@ -26,6 +26,7 @@ public sealed class GetRankingsQueryHandler(
             x.Shop.Rating,
             x.Shop.GoogleRating,
             x.Shop.ReviewCount,
+            x.Shop.GoogleReviewCount,
             [.. x.Shop.Types])).ToList();
     }
 }

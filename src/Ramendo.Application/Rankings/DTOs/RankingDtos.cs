@@ -3,7 +3,7 @@ namespace Ramendo.Application.Rankings.DTOs;
 public sealed record RankingItemDto(
     int Rank, string ShopGuid, string ShopName, string City, string District,
     string? CoverImage, float Score, float UserRating, float GoogleRating,
-    int ReviewCount, string[] Types);
+    int ReviewCount, int GoogleReviewCount, string[] Types);
 
 public sealed record RankingSettingsDto(
     bool AllowUser, bool AllowGoogle, bool AllowCombined,
