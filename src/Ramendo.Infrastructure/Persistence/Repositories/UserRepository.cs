@@ -25,8 +25,8 @@ public sealed class UserRepository(RamendoDbContext db) : IUserRepository
         if (!string.IsNullOrWhiteSpace(search))
             q = q.Where(u => u.Email.Contains(search) || (u.Name != null && u.Name.Contains(search)));
 
-        if (!string.IsNullOrWhiteSpace(role))
-            q = q.Where(u => u.Role.ToString().ToLower() == role.ToLower());
+        if (!string.IsNullOrWhiteSpace(role) && Enum.TryParse<UserRole>(role, ignoreCase: true, out var parsedRole))
+            q = q.Where(u => u.Role == parsedRole);
 
         var total = await q.CountAsync(ct);
         var items = await q.OrderByDescending(u => u.CreatedAt)

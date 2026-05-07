@@ -14,7 +14,7 @@ public sealed record RankingSettings(
 public sealed class RankingService(RamendoDbContext db) : IRankingService
 {
     private static readonly RankingSettings Defaults = new(
-        true, true, true, "user", 1.0f, 0.8f, 20, 5, 3.5f, true);
+        true, true, true, "user", 1.0f, 0.8f, 20, 0, 0f, false);
 
     public IReadOnlyList<(RamenShop Shop, float Score)> Rank(IEnumerable<RamenShop> shops, string type)
     {
