@@ -12,6 +12,8 @@ public interface IRamenShopRepository
     Task<int> CountAsync(CancellationToken ct = default);
     Task AddAsync(RamenShop shop, CancellationToken ct = default);
     Task AddMenuItemAsync(MenuItem item, CancellationToken ct = default);
+    Task<MenuItem?> GetMenuItemAsync(Guid shopId, Guid menuItemId, CancellationToken ct = default);
+    Task UpdateMenuItemAsync(MenuItem item, CancellationToken ct = default);
     Task UpdateAsync(RamenShop shop, CancellationToken ct = default);
     Task DeleteAsync(Guid id, CancellationToken ct = default);
 }
