@@ -3,7 +3,7 @@ namespace Ramendo.Application.Reviews.DTOs;
 public sealed record ReviewDto(
     string Id, float Rating, string? Comment, int UserLevel,
     string? VisitDate, string UserId, string? UserName, string? UserImage,
-    string ShopId, DateTime CreatedAt);
+    string ShopId, DateTime CreatedAt, string[] Images);
 
 public sealed record CreateReviewDto(
     Guid ShopGuid, float Rating, string? Comment,

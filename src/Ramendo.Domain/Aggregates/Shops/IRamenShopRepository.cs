@@ -11,6 +11,7 @@ public interface IRamenShopRepository
     Task<IReadOnlyList<RamenShop>> GetManyByIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default);
     Task<int> CountAsync(CancellationToken ct = default);
     Task AddAsync(RamenShop shop, CancellationToken ct = default);
+    Task AddMenuItemAsync(MenuItem item, CancellationToken ct = default);
     Task UpdateAsync(RamenShop shop, CancellationToken ct = default);
     Task DeleteAsync(Guid id, CancellationToken ct = default);
 }

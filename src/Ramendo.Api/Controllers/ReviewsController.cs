@@ -6,13 +6,12 @@ using Ramendo.Application.Common;
 using Ramendo.Application.Reviews.Commands;
 using Ramendo.Application.Reviews.DTOs;
 using Ramendo.Application.Reviews.Queries;
-using Ramendo.Application.Shops.Queries;
 
 namespace Ramendo.Api.Controllers;
 
 [ApiController]
 [Route("api")]
-public sealed class ReviewsController(IMediator mediator) : ControllerBase
+public sealed class ReviewsController(IMediator mediator, IImageUploadService images) : ControllerBase
 {
     [HttpGet("shops/{guid:guid}/reviews")]
     public async Task<ActionResult<ApiResponse<PagedResult<ReviewDto>>>> GetByShop(
@@ -30,6 +29,23 @@ public sealed class ReviewsController(IMediator mediator) : ControllerBase
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var result = await mediator.Send(new CreateReviewCommand(userId, dto), ct);
         return Ok(ApiResponse<ReviewDto>.Ok(result, "Review created."));
+    }
+
+    [HttpPost("reviews/images")]
+    [Authorize]
+    [Consumes("multipart/form-data")]
+    public async Task<ActionResult<ApiResponse<string[]>>> UploadImages(
+        IFormFileCollection files, CancellationToken ct)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var urls = new List<string>();
+        foreach (var file in files)
+        {
+            await using var stream = file.OpenReadStream();
+            var url = await images.UploadAsync(stream, file.FileName, $"ramendo/reviews/{userId}", ct);
+            urls.Add(url);
+        }
+        return Ok(ApiResponse<string[]>.Ok([.. urls]));
     }
 
     [HttpDelete("reviews/{id:guid}")]

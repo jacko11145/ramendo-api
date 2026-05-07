@@ -26,5 +26,5 @@ public sealed class GetReviewsByShopQueryHandler(
         r.User?.Experience.Level ?? 1,
         r.VisitDate?.ToString("yyyy-MM-dd"),
         r.UserId.ToString(), r.User?.Name, r.User?.Image,
-        r.RamenShopId.ToString(), r.CreatedAt);
+        r.RamenShopId.ToString(), r.CreatedAt, [.. r.Images]);
 }

@@ -40,6 +40,6 @@ public sealed class CreateReviewCommandHandler(
             review.Id.ToString(), review.Rating, review.Content,
             1, review.VisitDate?.ToString("yyyy-MM-dd"),
             review.UserId.ToString(), null, null,
-            review.RamenShopId.ToString(), review.CreatedAt);
+            review.RamenShopId.ToString(), review.CreatedAt, [.. review.Images]);
     }
 }

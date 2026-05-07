@@ -56,6 +56,12 @@ public sealed class RamenShopRepository(RamendoDbContext db) : IRamenShopReposit
         await db.SaveChangesAsync(ct);
     }
 
+    public async Task AddMenuItemAsync(MenuItem item, CancellationToken ct = default)
+    {
+        db.MenuItems.Add(item);
+        await db.SaveChangesAsync(ct);
+    }
+
     public async Task UpdateAsync(RamenShop shop, CancellationToken ct = default)
     {
         if (db.Entry(shop).State == EntityState.Detached)

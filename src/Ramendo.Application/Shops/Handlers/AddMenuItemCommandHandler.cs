@@ -15,7 +15,7 @@ public sealed class AddMenuItemCommandHandler(IRamenShopRepository shops) : IReq
         var item = shop.AddMenuItem(cmd.Name, cmd.Price, cmd.Description, cmd.Category,
             cmd.CustomCategory, cmd.IsHighlight, cmd.IsLimited, cmd.Position);
 
-        await shops.UpdateAsync(shop, ct);
+        await shops.AddMenuItemAsync(item, ct);
         return item.Id.ToString();
     }
 }
